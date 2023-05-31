@@ -18,8 +18,17 @@ async function getContactById(contactId) {
 }
 
 async function removeContact(contactId) {
-  const updateContacts = contacts.filter((contact) => contact.id !== contactId);
-  await fs.writeFile(contactsPath, JSON.stringify(updateData, null, 2));
+  const contacts = await listContacts();
+  //   const updateContacts = contacts.filter((contact) => contact.id !== contactId);
+  const contactIndex = contacts.findIndex(
+    (contact) => contact.id === contactId
+  );
+  if (contactIndex === -1) {
+    return null;
+  }
+  const [deletedContact] = contacts.splice(contactIndex, 1);
+  await fs.writeFile(contactsPath, JSON.stringify(updateContacts, null, 2));
+  return deletedContact;
 }
 
 async function addContact({ name, email, phone } = data) {
