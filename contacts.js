@@ -33,14 +33,14 @@ async function removeContact(contactId) {
       return null;
     }
     const [deletedContact] = contacts.splice(contactIndex, 1);
-    await fs.writeFile(contactsPath, JSON.stringify(updateContacts, null, 2));
+    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
     return deletedContact;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function addContact({ name, email, phone } = data) {
+async function addContact({ name, email, phone }) {
   try {
     const contacts = await listContacts();
     const newContact = {
